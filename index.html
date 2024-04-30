@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Setúbal Bay Apartment Rental</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -45,6 +46,35 @@
     .contact-info p {
       margin-bottom: 10px;
     }
+
+    #calendar {
+      max-width: 100%;
+      margin-top: 20px;
+    }
+
+    #booking-form {
+      margin-top: 20px;
+    }
+
+    #booking-form label {
+      display: block;
+    }
+
+    #booking-form input {
+      margin-bottom: 10px;
+    }
+
+    #booking-form button {
+      padding: 8px 15px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    #booking-form button:hover {
+      background-color: #555;
+    }
   </style>
 </head>
 <body>
@@ -67,15 +97,59 @@
       </ul>
     </section>
 
+    <section id="calendar">
+      <h2>Availability Calendar</h2>
+      <div id="datepicker"></div>
+    </section>
+
+    <section id="booking-form">
+      <h2>Booking Form</h2>
+      <form id="reservation-form">
+        <label for="check-in">Check-In Date:</label>
+        <input type="text" id="check-in" readonly required>
+        <label for="check-out">Check-Out Date:</label>
+        <input type="text" id="check-out" readonly required>
+        <button type="submit">Reserve</button>
+      </form>
+    </section>
+
     <section id="contact">
       <div class="contact-info">
         <h2>Contact Information</h2>
-        <p><strong>Email:</strong> info@xxx.com</p>
-        <p><strong>Phone:</strong> +351 xxx</p>
-        <p><strong>Address:</strong> 123 Setúbal, Setúbal, Portugal</p>
+        <p><strong>Email:</strong> info@setubalbayapartment.com</p>
+        <p><strong>Phone:</strong> +351 123 456 789</p>
+        <p><strong>Address:</strong> 123 Setúbal Bay Street, Setúbal, Portugal</p>
       </div>
     </section>
   </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+    $(function() {
+      $("#datepicker").datepicker({
+        dateFormat: "yy-mm-dd",
+        minDate: 0,
+        onSelect: function(date) {
+          $("#check-in").val(date);
+          $("#check-out").val('');
+        }
+      });
+
+      $("#check-out").datepicker({
+        dateFormat: "yy-mm-dd",
+        minDate: 0,
+        onSelect: function(date) {
+          var checkin = $("#check-in").datepicker("getDate");
+          var checkout = $("#check-out").datepicker("getDate");
+
+          if (checkout <= checkin) {
+            alert("Check-out date must be after check-in date");
+            $(this).val('');
+          }
+        }
+      });
+    });
+  </script>
 </body>
 </html>
-
